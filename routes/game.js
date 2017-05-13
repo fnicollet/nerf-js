@@ -69,7 +69,6 @@ router.get('/stop', function(req, res, next) {
         }
         var timestamp = +new Date();
         game["player" + player] = timestamp;
-<<<<<<< HEAD
         var difference = timestamp - game.start;
         var secondsDifference = Math.floor(difference/1000);
         var diff = 0;
@@ -91,6 +90,7 @@ router.get('/stop', function(req, res, next) {
         if (!player1Finished && player2Finished){
             game["player2Score"] = game.hasOwnProperty("player2Score") ? game.player2Score + 1 : 1;
         }
+        myo.stop();
         jsonfile.writeFile(file, obj, function (err) {
             res.send(game);
         });
@@ -105,9 +105,6 @@ router.get('/nextRound', function(req, res, next) {
         delete game.player2Diff;
         var timestamp = +new Date();
         game.start = timestamp;
-=======
-        myo.stop();
->>>>>>> 29c4bf23df724c216c8a8ed9509c4bfa118fca76
         jsonfile.writeFile(file, obj, function (err) {
             res.send(game);
         });
