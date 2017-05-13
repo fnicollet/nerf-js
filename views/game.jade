@@ -6,8 +6,16 @@ block content
             source(src="/images/music.mp3" type="audio/mpeg")
         video(autoplay,loop,muted)
             source(src="http://localhost:3000/images/background-video.mp4" type="video/mp4" style="height:100%;width:100%")
+        div.desertbottom
+            div.desert
+              div.tumbleweed
+              div.tumbleweed
+              div.tumbleweed
+              div.tumbleweed
+              div.tumbleweed
         div(class="form-container text-center" style="background-color:rgba(255,255,255,0.6);width:600px;margin-left:auto;margin-right:auto;margin-top:100px;border-radius:10px;")
             h1(style="text-align:center;" class="title") Cache-sexe duel
+
             div(ng-show="gameState == 0", class="form-container", style="height:100%;text-align:center;")
                 br
                 button.btn.btn-lg.btn-success(role='button', ng-click="startGame()") Provoquer un duel
@@ -17,14 +25,16 @@ block content
                 p.title ...Get Ready...
             div(ng-show="gameState == 2")
                 div(class="score" style="border-right:4px solid #444;")
-                    p.timer.winner 00:08
-                    p.playerScore 2
+                    p.timer.winner {{game.player1Diff}}
+                    p.playerScore {{game.player1Score}}
 
                 div(class="score" style="")
-                    p.timer 01:08
-                    p.playerScore 0
+                    p.timer {{game.player2Diff}}
+                    p.playerScore {{game.player2Score}}
 
-
+                div(style="clear:both;")
+                br
+                button.btn.btn-lg.btn-success(role='button', ng-click="nextRound()") Nouveau round!
 
             br
 

@@ -52,8 +52,54 @@ router.get('/stop', function(req, res, next) {
     var player = parseInt(req.query.player);
     jsonfile.readFile(file, function(err, obj) {
         var game = obj.games[obj.games.length - 1];
+        var player1Finished = game.hasOwnProperty("player1");
+        var player2Finished = game.hasOwnProperty("player2");
+        // éviter les doubles saisies
+        if (player == 1 && player1Finished){
+            res.send(game);
+            return;
+        }
+        if (player == 2 && player2Finished){
+            res.send(game);
+            return;
+        }
         var timestamp = +new Date();
         game["player" + player] = timestamp;
+        var difference = timestamp - game.start;
+        var secondsDifference = Math.floor(difference/1000);
+        var diff = 0;
+        if (secondsDifference == 0){
+            diff = "00";
+        }else if (secondsDifference < 10){
+            diff = "0" + secondsDifference;
+        } else {
+            diff = "" + secondsDifference;
+        }
+        diff += ":" + ("" + difference % 1000).substr(0, 2);
+        game["player" + player + "Diff"] = diff;
+
+        player1Finished = game.hasOwnProperty("player1");
+        player2Finished = game.hasOwnProperty("player2");
+        if (player1Finished && !player2Finished){
+            game["player1Score"] = game.hasOwnProperty("player1Score") ? game.player1Score + 1 : 1;
+        }
+        if (!player1Finished && player2Finished){
+            game["player2Score"] = game.hasOwnProperty("player2Score") ? game.player2Score + 1 : 1;
+        }
+        jsonfile.writeFile(file, obj, function (err) {
+            res.send(game);
+        });
+    });
+});
+router.get('/nextRound', function(req, res, next) {
+    jsonfile.readFile(file, function(err, obj) {
+        var game = obj.games[obj.games.length - 1];
+        delete game.player1;
+        delete game.player2;
+        delete game.player1Diff;
+        delete game.player2Diff;
+        var timestamp = +new Date();
+        game.start = timestamp;
         jsonfile.writeFile(file, obj, function (err) {
             res.send(game);
         });

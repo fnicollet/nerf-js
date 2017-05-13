@@ -11,7 +11,6 @@ video {
     background: #222;
     width:100%;
     background-size: cover;
-    transition: 1s opacity;
     opacity: 0.5;
     position: absolute;
     top: 0;
@@ -46,6 +45,7 @@ video {
 }
 .timer{
     font-size: 28px;
+    min-height: 40px;
 }
 .playerScore{
     font-size: 100px;
@@ -66,4 +66,91 @@ video {
     width: 200px;
     border: 6px solid #666;
     border-radius: 100%;
+}
+
+
+
+
+
+
+
+
+/* tumbleweed */
+.desert {
+    position: relative;
+    height: 12rem;
+    overflow: hidden;
+}
+
+.desert .tumbleweed {
+    position: absolute;
+    top: 0;
+    left: -12rem;
+    background: url("/images/tumbleweed.png") no-repeat center;
+    background-size: cover;
+    width: 12rem;
+    height: 12rem;
+    animation: jumping 1.5s infinite, rolling 5s linear infinite, rotating 2s linear infinite;
+}
+
+.desertbottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.tumbleweed:nth-child(2) {
+    animation-delay: 2.5s;
+}
+.tumbleweed:nth-child(3) {
+    animation-delay: 4s;
+}
+.tumbleweed:nth-child(4) {
+    animation-delay: 5s;
+}
+.tumbleweed:nth-child(5) {
+    animation-delay: 6s;
+}
+
+
+@keyframes jumping {
+    0% {
+        top: 0rem;
+        animation-timing-function: ease-in;
+    }
+    25% {
+        top: 3rem;
+        animation-timing-function: ease-out;
+    }
+    50% {
+        top: 1rem;
+        animation-timing-function: ease-in;
+    }
+    75% {
+        top: 3rem;
+        animation-timing-function: ease-out;
+    }
+    100% {
+        top: 0rem;
+        animation-timing-function: ease-in;
+    }
+}
+
+@keyframes rolling {
+    0% {
+        left: -12rem;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
