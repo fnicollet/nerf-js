@@ -34,6 +34,7 @@ app.controller('GameCtrl', function($scope, $http) {
         $http.get('/game/start?id=' + $scope.gameId).then(function(response) {
             $scope.game = response.data;
             $scope.gameState = 1;
+<<<<<<< HEAD
             $scope.onRoundStarted();
         });
     };
@@ -44,6 +45,16 @@ app.controller('GameCtrl', function($scope, $http) {
             $scope.game = response.data;
             $scope.gameState = 1;
             $scope.onRoundStarted();
+=======
+            setTimeout(() => $http.get(`/game/init?id=${$scope.game.id}`), 3000 + Math.random() * 10000);
+            var message = "Get ready, bitches";
+            $http.get('/game/say?message=' + encodeURIComponent(message))
+                .then(function(response) {
+            });
+            $scope.reloadGameInterval = setInterval(function(){
+                $scope.reloadGame();
+            }, $scope.PING_INTERVAL);
+>>>>>>> 29c4bf23df724c216c8a8ed9509c4bfa118fca76
         });
     };
 

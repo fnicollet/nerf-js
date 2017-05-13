@@ -1,56 +1,51 @@
 const Myo = require('myo');
-const ws  = require('ws');
-//const Launcher = require('../launcher');
+const ws = require('ws');
 
-// False quand un seul myo est connecté, true quand on a au moins 2 myo.
-var notLaunched;
+const player1 = `Yann Lombard's Myo`; // Bare myo
+const player2 = 'My Myo'; // Myo with FH sticker
 
 /**
  * Reset la position du myon en paramètre
  * @param myMyo
  */
-var resetPosition = function(myMyo) {
+const resetPosition = function (myMyo) {
     myMyo.zeroOrientation();
 };
 
 /**
  * Fais vibrer le myo en paramètre
- * @param myMyo
  */
-var vibrate = function(myMyo) {
-    myMyo.vibrate();
-};
+const vibrate = () => Myo.myos.forEach(myo => myo.vibrate());
 
 /**
  * callback appelé quand un myo est connecté
  */
-var connected = function() {
+const connected = function () {
 
-    var myMyo = this;
+    const myMyo = this;
 
     console.log('Connected !', myMyo.name);
 
-    myMyo.on('battery_level', function(val) {
+    myMyo.on('battery_level', function (val) {
         console.log('Batterie', myMyo.name, val, '%');
     });
 
     myMyo.requestBatteryLevel();
-
 };
 
-var onOrientation = function(data) {
-    var myMyo = this;
+const onOrientation = function (data) {
+    const myMyo = this;
 
-    var valueX = (data.x * 10).toFixed(3),
+    const valueX = (data.x * 10).toFixed(3),
         valueY = (data.y * 10).toFixed(3),
         valueZ = (data.z * 10).toFixed(3),
         valueW = (data.w * 10).toFixed(3);
 
-    if(valueX < 1 && valueX > -1 &&
+    if (valueX < 1 && valueX > -1 &&
         valueY < 1 && valueY > -1 &&
         valueZ < 1 && valueZ > -1 &&
         valueW < 2 && valueW > 0) {
-        myMyo.nerf.callback();
+        myMyo.nerf.callback(this.name === player1 ? 'player1' : 'player2');
     }
 };
 
@@ -59,13 +54,15 @@ var onOrientation = function(data) {
  * appelle le callback quand le joueur lève son flingue
  * @param myMyo
  */
-var startCounter = function(myMyo, callback) {
+const start = function (callback) {
 
     // enrichi l'objet myo avec le callback
-    myMyo.nerf          = myMyo.nerf || {};
-    myMyo.nerf.callback = callback;
+    Myo.myos.forEach(myo => {
+        myo.nerf = myo.nerf || {};
+        myo.nerf.callback = callback;
 
-    myMyo.on('orientation', onOrientation);
+        myo.on('orientation', onOrientation);
+    });
 };
 
 /**
@@ -73,43 +70,25 @@ var startCounter = function(myMyo, callback) {
  * appelle le callback quand le joueur lève son flingue
  * @param myMyo
  */
-var stopCounter = function(myMyo) {
-    myMyo.off('orientation', onOrientation);
-};
-
-/**
- * Lance la connexion Myo
- * @param callback retourne les myos connectés
- */
-var init = function(callback) {
-
-    Myo.connect('com.nerfjs.myo', ws);
-
-    Myo.on('fist', function() {
-        this.vibrate();
-        console.log('FISTED');
-    });
-
-    // log la batterie et console log pour signaler que le device est connecté
-    Myo.on('connected', connected);
-
-    Myo.on('connected', function() {
-
-        // deux joueur connectés
-        if(Myo.myos.length > 1 && notLaunched) {
-            notLaunched = true;
-
-            callback(Myo.myos);
-        }
+const stop = function () {
+    Myo.myos.forEach(myo => {
+        myo.off('orientation', onOrientation);
     });
 };
 
-init();
+Myo.connect('com.nerfjs.myo', ws);
+
+Myo.on('fist', function () {
+    this.vibrate();
+    console.log('FISTED');
+});
+
+// log la batterie et console log pour signaler que le device est connecté
+Myo.on('connected', connected);
 
 module.exports = {
-    init         : init,
-    resetPosition: resetPosition,
-    startCounter : startCounter,
-    stopCounter  : stopCounter,
-    vibrate      : vibrate
+    resetPosition,
+    start,
+    stop,
+    vibrate
 };
