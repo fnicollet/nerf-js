@@ -1,6 +1,6 @@
 {
   "name": "nerf-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -14,6 +14,10 @@
     "jsonfile": "^3.0.0",
     "morgan": "~1.8.1",
     "say": "^0.11.0",
-    "serve-favicon": "~2.4.2"
+    "myo": "^3.0.0",
+    "node-hid": "^0.5.4",
+    "serve-favicon": "~2.4.2",
+    "underscore": "^1.8.3",
+    "ws": "^2.3.1"
   }
 }
