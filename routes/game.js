@@ -44,10 +44,14 @@ router.get('/start', function (req, res) {
             player2Drawn: false,
         };
         obj.games.push(game);
-        myo.start((player) => {
-            game[`${player}Drawn`].drawn = true;
-            jsonfile.writeFile(file, obj, _ => res.send(game));
-        });
+        try {
+            myo.start((player) => {
+                game[`${player}Drawn`].drawn = true;
+                jsonfile.writeFile(file, obj, _ => res.send(game));
+            });
+        } catch (e){
+            console.log("myo fail")
+        }
         jsonfile.writeFile(file, obj, _ => res.send(game));
     });
 });
@@ -67,6 +71,7 @@ router.get('/stop', function(req, res, next) {
             res.send(game);
             return;
         }
+        console.log(game);
         var timestamp = +new Date();
         game["player" + player] = timestamp;
         var difference = timestamp - game.start;
@@ -132,7 +137,7 @@ router.get('/reset', function(req, res, next) {
 router.get('/init', (req, res) => {
     const id = parseInt(req.query.id);
     jsonfile.readFile(file, (err, obj) => {
-        let game = _.findWhere(obj.games, {id: id});
+        var game = _.findWhere(obj.games, {id: id});
         game.start = +new Date();
         if(game.player1Drawn) {
             console.log('>>>>>>>>>> Player 1 cheated!!!');
@@ -140,7 +145,11 @@ router.get('/init', (req, res) => {
         if(game.player2Drawn) {
             console.log('>>>>>>>>>> Player 2 cheated');
         }
-        myo.vibrate();
+        try {
+            myo.vibrate();
+        } catch (e){
+            console.log("myo fail 2");
+        }
         jsonfile.writeFile(file, obj, _ => res.send(game));
     });
 });

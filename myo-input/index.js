@@ -83,15 +83,22 @@ const stop = function () {
     });
 };
 
-Myo.connect('com.nerfjs.myo', ws);
+try {
+    Myo.onError = function(){
+        console.log("Myo sockets failed to init");
+    };
+    Myo.connect('com.nerfjs.myo', ws);
 
-Myo.on('fist', function () {
-    this.vibrate();
-    console.log('FISTED');
-});
+    Myo.on('fist', function () {
+        this.vibrate();
+        console.log('FISTED');
+    });
 
-// log la batterie et console log pour signaler que le device est connecté
-Myo.on('connected', connected);
+    // log la batterie et console log pour signaler que le device est connecté
+    Myo.on('connected', connected);
+} catch (e){
+    console.log("Myo failed to init");
+}
 
 module.exports = {
     resetPosition,
