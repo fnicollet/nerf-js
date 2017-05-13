@@ -8,8 +8,14 @@ const player2 = 'My Myo'; // Myo with FH sticker
  * Reset la position du myon en paramètre
  * @param myMyo
  */
-const resetPosition = function (myMyo) {
-    myMyo.zeroOrientation();
+const resetPosition = function (player) {
+    Myo.myos.forEach(myo => {
+        const name = player === 'player1' ? player1 : player2;
+        if (myo.name === name) {
+            console.log(`Reset position for ${player} - ${name}`);
+            myo.zeroOrientation();
+        }
+    });
 };
 
 /**
@@ -39,13 +45,14 @@ const onOrientation = function (data) {
     const valueX = (data.x * 10).toFixed(3),
         valueY = (data.y * 10).toFixed(3),
         valueZ = (data.z * 10).toFixed(3),
-        valueW = (data.w * 10).toFixed(3);
+        valueW = (data.w).toFixed(3);
 
     if (valueX < 1 && valueX > -1 &&
         valueY < 1 && valueY > -1 &&
         valueZ < 1 && valueZ > -1 &&
         valueW < 2 && valueW > 0) {
-        myMyo.nerf.callback(this.name === player1 ? 'player1' : 'player2');
+        console.log('draw!');
+        // myMyo.nerf.callback(this.name === player1 ? 'player1' : 'player2');
     }
 };
 

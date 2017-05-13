@@ -30,6 +30,7 @@ app.controller('GameCtrl', function($scope, $http) {
         $http.get('/game/stop?player=' + player).then(function(response) {
         });
     };
+    $scope.calibratePlayer = player => $http.get(`/calibrate/player${player}`);
     $scope.startGame = function(){
         $http.get('/game/start?id=' + $scope.gameId).then(function(response) {
             $scope.game = response.data;
