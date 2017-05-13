@@ -1,8 +1,69 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Rye', cursive !important;
 }
 
-a {
-  color: #00B7FF;
+video {
+    background: #222;
+    width:100%;
+    background-size: cover;
+    transition: 1s opacity;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.form-container {
+    padding-bottom: 50px;
+    /*
+    -moz-box-shadow:  0 2px 5px 0 #333;
+    -webkit-box-shadow: 0 2px 5px 0 #333;
+    box-shadow: 0 2px 5px 0 #333;
+    */
+
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container .text-center {
+    position: relative;
+    margin-top: 8%;
+    display: inline-block;
+}
+
+.score{
+    width: 49%;
+    height: 200px;
+    float:left;
+}
+.title{
+    font-size: 56px !important;
+}
+.timer{
+    font-size: 28px;
+}
+.playerScore{
+    font-size: 100px;
+}
+
+@-webkit-keyframes rotating {
+    0%   { -webkit-transform: rotate(0deg); }
+    75% { -webkit-transform: rotate(60deg); }
+    100% { -webkit-transform: rotate(60deg); }
+}
+
+.rotating {
+    -webkit-animation: rotating 1.5s ease-in infinite;
+
+}
+.cylinder {
+    fill: transparent;
+    width: 200px;
+    border: 6px solid #666;
+    border-radius: 100%;
 }

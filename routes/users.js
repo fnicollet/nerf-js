@@ -18,6 +18,8 @@ var _ = require('underscore');
  }
  */
 router.get('/', function(req, res, next) {
+    var say = require('say');
+    /*
     var keyboards = [];
     var devices = HID.devices();
     _.each(devices, function(device){
@@ -45,7 +47,21 @@ router.get('/', function(req, res, next) {
         }
 
     });
+
     res.send(keyboards);
+    */
+    say.speak("get ready, bitches", undefined, 1.0);
+    /*
+    say.speak('three', undefined, 1.0, function(){
+        say.speak("two", undefined, 1.0, function(){
+            say.speak("one", undefined, 1.0, function(){
+                say.speak("go go go", undefined, 1.0);
+            });
+        });
+    });
+    */
+    //say.speak("three");
+    res.send("ok");
 });
 
 module.exports = router;
