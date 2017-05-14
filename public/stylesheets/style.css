@@ -62,12 +62,14 @@ video {
 
 @-webkit-keyframes rotating {
     0%   { -webkit-transform: rotate(0deg); }
+    35% { -webkit-transform: rotate(30deg); }
     75% { -webkit-transform: rotate(60deg); }
     100% { -webkit-transform: rotate(60deg); }
 }
 
 .rotating {
-    -webkit-animation: rotating 1.5s ease-in infinite;
+    /* -webkit-animation: rotating 1.5s ease-in infinite;*/
+    -webkit-animation: rotating 1.5s linear infinite;
 
 }
 .cylinder {
@@ -80,7 +82,7 @@ video {
 
 
 .debug {
-    display: none;
+    display: none !important;
 }
 .debug-mode .debug {
     display: inline-block;
