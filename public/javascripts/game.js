@@ -19,6 +19,15 @@ app.controller('GameCtrl', function($scope, $http) {
         $scope.reloadGameInterval = setInterval(function(){
             $scope.reloadGame();
         }, $scope.PING_INTERVAL);
+        var waitTime = $scope.debug ? 3000 : 3000 + Math.random() * 10000;
+            if ($scope.initTimeout != null){
+                clearTimeout($scope.initTimeout);
+            }
+            $scope.initTimeout = setTimeout(() => {
+                $http.get(`/game/init?id=${$scope.game.id}`);
+            $scope.gameInit = true;
+            $scope.message = "FIRE!";
+        }, waitTime);
     };
 
     $scope.gameFinished = function(){
@@ -50,12 +59,6 @@ app.controller('GameCtrl', function($scope, $http) {
             $scope.game = response.data;
             $scope.gameState = 1;
             $scope.onRoundStarted();
-            var waitTime = $scope.debug ? 3000 : 3000 + Math.random() * 10000;
-            $scope.initTimeout = setTimeout(() => {
-                $http.get(`/game/init?id=${$scope.game.id}`);
-                $scope.gameInit = true;
-                $scope.message = "FIRE!";
-            }, waitTime);
         });
     };
     $scope.nextRound = function(){
