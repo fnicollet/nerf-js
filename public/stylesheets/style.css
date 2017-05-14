@@ -108,7 +108,7 @@ video {
     background-size: cover;
     width: 12rem;
     height: 12rem;
-    animation: jumping 1.5s infinite, rolling 5s linear infinite, rotating 2s linear infinite;
+    animation: jumping 1.5s infinite, rolling 5s linear infinite, rotatingt 2s linear infinite;
 }
 
 .desertbottom {
@@ -164,7 +164,7 @@ video {
     }
 }
 
-@keyframes rotating {
+@keyframes rotatingt {
     0% {
         transform: rotate(0deg);
     }
