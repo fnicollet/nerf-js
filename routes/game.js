@@ -29,6 +29,10 @@ router.get('/load', function(req, res, next) {
 
 });
 
+const saveGame = (game) => jsonfile.readFile(file, (err, obj) => {
+    Object.assign(_.findWhere(obj.games, {id: game.id}), game);
+    jsonfile.writeFile(file, obj);
+});
 
 router.get('/start', function (req, res) {
     jsonfile.readFile(file, function (err, obj) {
@@ -46,8 +50,9 @@ router.get('/start', function (req, res) {
         obj.games.push(game);
         try {
             myo.start((player) => {
-                game[`${player}Drawn`].drawn = true;
-                jsonfile.writeFile(file, obj, _ => res.send(game));
+                console.log(player, 'drawn');
+                game[`${player}Drawn`] = true;
+                saveGame(game);
             });
         } catch (e){
             console.log("myo fail")
@@ -56,7 +61,7 @@ router.get('/start', function (req, res) {
     });
 });
 
-router.get('/stop', function(req, res, next) {
+router.get('/stop', function(req, res) {
     var player = parseInt(req.query.player);
     jsonfile.readFile(file, function(err, obj) {
         var game = obj.games[obj.games.length - 1];

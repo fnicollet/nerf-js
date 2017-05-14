@@ -1,18 +1,14 @@
 const Myo = require('myo');
 const ws = require('ws');
 
-const player1 = `Yann Lombard's Myo`; // Bare myo
-const player2 = 'My Myo'; // Myo with FH sticker
-
 /**
  * Reset la position du myon en paramètre
  * @param myMyo
  */
 const resetPosition = function (player) {
     Myo.myos.forEach(myo => {
-        const name = player === 'player1' ? player1 : player2;
-        if (myo.name === name) {
-            console.log(`Reset position for ${player} - ${name}`);
+        if (myo.name === player) {
+            console.log(`Reset position for ${player}`);
             myo.zeroOrientation();
         }
     });
@@ -40,26 +36,22 @@ const connected = function () {
 };
 
 const onOrientation = function (data) {
-    const myMyo = this;
-
     const valueX = (data.x * 10).toFixed(3),
         valueY = (data.y * 10).toFixed(3),
         valueZ = (data.z * 10).toFixed(3),
         valueW = (data.w).toFixed(3);
 
-    if (valueX < 1 && valueX > -1 &&
-        valueY < 1 && valueY > -1 &&
-        valueZ < 1 && valueZ > -1 &&
-        valueW < 2 && valueW > 0) {
-        console.log('draw!');
-        // myMyo.nerf.callback(this.name === player1 ? 'player1' : 'player2');
+    if (valueX > 1 || valueX < -1 ||
+        valueY > 1 || valueY < -1 ||
+        valueZ > 1 || valueZ < -1 ||
+        valueW > 2 || valueW < 0) {
+        this.nerf.callback(this.name);
     }
 };
 
 /**
  * Commence a surveiller si le myo en paramètre est bien tourné vers le bas
  * appelle le callback quand le joueur lève son flingue
- * @param myMyo
  */
 const start = function (callback) {
 
@@ -84,7 +76,7 @@ const stop = function () {
 };
 
 try {
-    Myo.onError = function(){
+    Myo.onError = function () {
         console.log("Myo sockets failed to init");
     };
     Myo.connect('com.nerfjs.myo', ws);
@@ -96,7 +88,7 @@ try {
 
     // log la batterie et console log pour signaler que le device est connecté
     Myo.on('connected', connected);
-} catch (e){
+} catch (e) {
     console.log("Myo failed to init");
 }
 
