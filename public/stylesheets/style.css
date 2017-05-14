@@ -83,7 +83,7 @@ video {
     display: none !important;
 }
 .debug-mode .debug {
-    display: inline-block;
+    display: inline-block !important;
 }
 
 

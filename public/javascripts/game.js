@@ -5,7 +5,7 @@ app.controller('GameCtrl', function($scope, $http) {
     $scope.gameInit = false;
     $scope.gameState = 0;
     $scope.reloadGameInterval = null;
-    $scope.PING_INTERVAL = 100;
+    $scope.PING_INTERVAL = 300;
     $scope.message = null;
     $scope.initTimeout = null;
     $scope.debug = window.location.href.indexOf("debug") != -1;
