@@ -79,11 +79,11 @@ video {
 
 
 
-.debug-mode{
+.debug {
     display: none;
 }
-.debug .debug-mode{
-    display: initial;
+.debug-mode .debug {
+    display: inline-block;
 }
 
 
