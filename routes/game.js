@@ -15,6 +15,9 @@ router.get('/', function(req, res, next) {
 
 router.get('/load', function(req, res, next) {
     jsonfile.readFile(file, function(err, obj) {
+        if (!obj || !obj.games){
+            res.send('KO', 404);
+        }
         const game = obj.games[obj.games.length - 1];
         res.send(game);
     });

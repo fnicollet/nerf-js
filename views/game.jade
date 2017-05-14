@@ -15,7 +15,9 @@ block content
               div.tumbleweed
         div(class="form-container text-center" ng-class="gameInit ? 'game-init' : ''")
             h1(style="text-align:center;" class="title") Cache-sexe duel
-            pre.debug {{game}}
+            div.debug(style="display:block;")
+                div(style="display:block;word-wrap: break-word;")
+                    {{game}}
             div(ng-show="gameState == 0", style="height:100%;text-align:center;")
                 br
                 button.btn.btn-lg.btn-success(role='button', ng-click="startGame()") Provoquer un duel
