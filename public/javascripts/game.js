@@ -51,6 +51,9 @@ app.controller('GameCtrl', function($scope, $http) {
             $scope.gameState = 1;
             $scope.onRoundStarted();
             var waitTime = $scope.debug ? 3000 : 3000 + Math.random() * 10000;
+            if ($scope.initTimeout != null){
+                clearTimeout($scope.initTimeout);
+            }
             $scope.initTimeout = setTimeout(() => {
                 $http.get(`/game/init?id=${$scope.game.id}`);
                 $scope.gameInit = true;
