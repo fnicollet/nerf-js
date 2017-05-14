@@ -44,6 +44,7 @@ app.controller('GameCtrl', function($scope, $http) {
                 if ($scope.initTimeout != null){
                     clearTimeout($scope.initTimeout);
                     $scope.initTimeout = null;
+                    $http.get(`/game/init?id=${$scope.game.id}`);
                 }
                 $scope.gameFinished();
             }
