@@ -14,24 +14,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/load', function(req, res, next) {
-    if (!req.query.id){
-        res.send("Impossible de trouver la partie '" + req.query.id + "'", 404);
-    }
-    var id = parseInt(req.query.id);
     jsonfile.readFile(file, function(err, obj) {
-        var game = _.findWhere(obj.games, {id: id});
-        if (!game){
-            //res.send("Impossible de trouver la partie '" + id + "'", 404);
-            return;
-        }
+        const game = obj.games[obj.games.length - 1];
         res.send(game);
     });
-
-});
-
-const saveGame = (game) => jsonfile.readFile(file, (err, obj) => {
-    Object.assign(_.findWhere(obj.games, {id: game.id}), game);
-    jsonfile.writeFile(file, obj);
 });
 
 router.get('/start', function (req, res) {
@@ -52,7 +38,7 @@ router.get('/start', function (req, res) {
             myo.start((player) => {
                 console.log(player, 'drawn');
                 game[`${player}Drawn`] = true;
-                saveGame(game);
+                jsonfile.writeFile(file, obj);
             });
         } catch (e){
             console.log("myo fail")
@@ -151,10 +137,10 @@ router.get('/reset', function(req, res, next) {
 });
 
 router.get('/init', (req, res) => {
-    const id = parseInt(req.query.id);
     jsonfile.readFile(file, (err, obj) => {
-        var game = _.findWhere(obj.games, {id: id});
-        game.start = +new Date();
+        const game = obj.games[obj.games.length - 1];
+        const timestamp = +new Date();
+        game.start = timestamp;
         if(game.player1Drawn) {
             game.player1Diff = "Trop tôt!";
             game.player1Score = game.player1Score - 1;
