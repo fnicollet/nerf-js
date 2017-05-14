@@ -28,7 +28,10 @@ app.controller('GameCtrl', function($scope, $http) {
     $scope.reloadGame = function(){
         $http.get('/game/load?id=' + $scope.game.id).then(function(response) {
             $scope.game = response.data;
-            if ($scope.game.hasOwnProperty("player1") || $scope.game.hasOwnProperty("player2")){
+            var hasAnyDraw = $scope.game.player1Drawn === true || $scope.game.player2Drawn === true;
+            var drawBefore = !$scope.gameInit && hasAnyDraw;
+            var touched = $scope.game.hasOwnProperty("player1") || $scope.game.hasOwnProperty("player2");
+            if (drawBefore || touched){
                 if ($scope.initTimeout != null){
                     clearTimeout($scope.initTimeout);
                     $scope.initTimeout = null;
