@@ -8,6 +8,7 @@ app.controller('GameCtrl', function($scope, $http) {
     $scope.PING_INTERVAL = 100;
     $scope.message = null;
     $scope.initTimeout = null;
+    $scope.debug = window.location.href.indexOf("debug") != -1;
 
     $scope.onRoundStarted = function(){
         $scope.gameInit = false;
@@ -46,7 +47,7 @@ app.controller('GameCtrl', function($scope, $http) {
             $scope.game = response.data;
             $scope.gameState = 1;
             $scope.onRoundStarted();
-            var waitTime = window.location.href.indexOf("debug") != -1 ? 0 : 3000 + Math.random() * 10000;
+            var waitTime = $scope.debug ? 0 : 3000 + Math.random() * 10000;
             $scope.initTimeout = setTimeout(() => {
                 $http.get(`/game/init?id=${$scope.game.id}`);
                 $scope.gameInit = true;

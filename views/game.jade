@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    div(ng-controller="GameCtrl", style="height:100%;")
+    div(ng-controller="GameCtrl", style="height:100%;"  ng-class="debug ? 'debug-mode' : ''")
         audio(autoplay,loop, muted)
             source(src="/images/music.mp3" type="audio/mpeg")
         video(autoplay,loop,muted)
@@ -15,7 +15,7 @@ block content
               div.tumbleweed
         div(class="form-container text-center" ng-class="gameInit ? 'game-init' : ''")
             h1(style="text-align:center;" class="title") Cache-sexe duel
-            pre {{game}}
+            pre.debug {{game}}
             div(ng-show="gameState == 0", style="height:100%;text-align:center;")
                 br
                 button.btn.btn-lg.btn-success(role='button', ng-click="startGame()") Provoquer un duel
@@ -38,9 +38,9 @@ block content
 
             br
 
-            button.btn.btn-lg.btn-success(role='button', ng-click="stopPlayer(1)") Stop Player 1
-            button.btn.btn-lg.btn-success(role='button', ng-click="stopPlayer(2)") Stop Player 2
+            button.btn.btn-lg.btn-success.debug(role='button', ng-click="stopPlayer(1)") Stop Player 1
+            button.btn.btn-lg.btn-success.debug(role='button', ng-click="stopPlayer(2)") Stop Player 2
             br
             br
-            button.btn.btn-lg.btn-success(role='button', ng-click="calibratePlayer(1)") Calibrate Player 1
-            button.btn.btn-lg.btn-success(role='button', ng-click="calibratePlayer(2)") Calibrate Player 2
+            button.btn.btn-lg.btn-success.debug(role='button', ng-click="calibratePlayer(1)") Calibrate Player 1
+            button.btn.btn-lg.btn-success.debug(role='button', ng-click="calibratePlayer(2)") Calibrate Player !2

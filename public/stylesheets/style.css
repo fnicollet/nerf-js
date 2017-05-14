@@ -79,6 +79,13 @@ video {
 
 
 
+.debug-mode{
+    display: none;
+}
+.debug .debug-mode{
+    display: initial;
+}
+
 
 
 
