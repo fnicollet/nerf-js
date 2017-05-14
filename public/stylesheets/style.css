@@ -68,8 +68,7 @@ video {
 }
 
 .rotating {
-    /* -webkit-animation: rotating 1.5s ease-in infinite;*/
-    -webkit-animation: rotating 1.5s linear infinite;
+    -webkit-animation: rotating 1.5s ease-in infinite;
 
 }
 .cylinder {
