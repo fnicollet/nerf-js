@@ -76,12 +76,17 @@ router.get('/stop', function(req, res) {
             res.send(game);
             return;
         }
-        console.log(game);
         var timestamp = +new Date();
         game["player" + player] = timestamp;
+        var isGameStarted = game.hasOwnProperty("start");
+        var diff = "";
+        if (!isGameStarted){
+            res.send(game);
+            return;
+        }
         var difference = timestamp - game.start;
         var secondsDifference = Math.floor(difference/1000);
-        var diff = 0;
+
         if (secondsDifference == 0){
             diff = "00";
         }else if (secondsDifference < 10){
@@ -90,17 +95,22 @@ router.get('/stop', function(req, res) {
             diff = "" + secondsDifference;
         }
         diff += ":" + ("" + difference % 1000).substr(0, 2);
+
         game["player" + player + "Diff"] = diff;
 
         player1Finished = game.hasOwnProperty("player1");
         player2Finished = game.hasOwnProperty("player2");
         if (player1Finished && !player2Finished){
-            game["player1Score"] = game.hasOwnProperty("player1Score") ? game.player1Score + 1 : 1;
+            game.player1Score = game.player1Score + 1;
         }
         if (!player1Finished && player2Finished){
-            game["player2Score"] = game.hasOwnProperty("player2Score") ? game.player2Score + 1 : 1;
+            game.player2Score = game.player2Score + 1;
         }
-        myo.stop();
+        try {
+            myo.stop();
+        } catch (e){
+            console.log("myo failed to stop");
+        }
         jsonfile.writeFile(file, obj, function (err) {
             res.send(game);
         });
@@ -113,8 +123,9 @@ router.get('/nextRound', function(req, res, next) {
         delete game.player2;
         delete game.player1Diff;
         delete game.player2Diff;
-        var timestamp = +new Date();
-        game.start = timestamp;
+        delete game.start;
+        game.player1Drawn = false;
+        game.player2Drawn = false;
         jsonfile.writeFile(file, obj, function (err) {
             res.send(game);
         });
@@ -145,15 +156,19 @@ router.get('/init', (req, res) => {
         var game = _.findWhere(obj.games, {id: id});
         game.start = +new Date();
         if(game.player1Drawn) {
+            game.player1Diff = "Trop tôt!";
+            game.player1Score = game.player1Score - 1;
             console.log('>>>>>>>>>> Player 1 cheated!!!');
         }
         if(game.player2Drawn) {
+            game.player2Diff = "Trop tôt!";
+            game.player2Score = game.player2Score - 1;
             console.log('>>>>>>>>>> Player 2 cheated');
         }
         try {
             myo.vibrate();
         } catch (e){
-            console.log("myo fail 2");
+            console.log("myo failed to vibrate");
         }
         jsonfile.writeFile(file, obj, _ => res.send(game));
     });
